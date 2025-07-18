@@ -1,6 +1,9 @@
-res://goblin.tscn
-res://character_body_2d.gd
-res://Code/goblin.gd
+res://Menu.tscn
+res://Startmenu.gd
 res://scenes/goblin.tscn
 res://scenes/game.tscn
 res://scenes/plat.tscn
+res://scenes/Menu.tscn
+res://StartMenu.tscn
+res://scenes/StartMenu.tscn
+res://Code/Startmenu.gd
