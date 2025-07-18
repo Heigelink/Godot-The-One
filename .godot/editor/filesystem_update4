@@ -1,2 +1,6 @@
 res://goblin.tscn
 res://character_body_2d.gd
+res://Code/goblin.gd
+res://scenes/goblin.tscn
+res://scenes/game.tscn
+res://scenes/plat.tscn
