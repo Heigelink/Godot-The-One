@@ -1,1 +1,6 @@
 res://scenes/StartMenu.tscn
+res://control.gd
+res://Settings.tscn
+res://Code/Startmenu.gd
+res://scenes/Settings.tscn
+res://Code/control.gd

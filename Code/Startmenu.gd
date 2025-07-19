@@ -31,7 +31,7 @@ func _on_start_button_pressed():
 func _on_settings_button_pressed():
 	print("Opening settings...")
 	# Replace "res://SettingsMenu.tscn" with your settings scene path
-	get_tree().change_scene_to_file("res://scenes/options.tscn")
+	get_tree().change_scene_to_file("res://scenes/Settings.tscn")
 
 # Quit the game
 func _on_quit_button_pressed():
