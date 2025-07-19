@@ -4,3 +4,5 @@ res://Settings.tscn
 res://Code/Startmenu.gd
 res://scenes/Settings.tscn
 res://Code/control.gd
+res://MusicManager.gd
+res://default_bus_layout.tres

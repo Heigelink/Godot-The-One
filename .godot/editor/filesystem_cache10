@@ -1,6 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1752948217
-control.gd::GDScript::3650599767993922080::1752947890::0::1::::<>Control<><>0<>0<><>::
+::res://::1752950433
 README.md::TextFile/TextFile::-1::1752895621::0::1::::<><><>0<>0<><>::
 shovel_boss.tscn::PackedScene/PackedScene::3656107339880566018::1752944001::0::1::::<><><>0<>0<><>::uid://bkgfqkh74w6rq::::res://animations/reworked knight shovel idle-Sheet.png
 ::res://animations/::1752944020
@@ -9,14 +8,17 @@ goblin-idle.png::CompressedTexture2D/CompressedTexture2D::2340885778725119530::1
 goblin-jump-animation.png::CompressedTexture2D/CompressedTexture2D::1562446915476148641::1752895621::1752895621::1::::<><><>0<>0<>5340d33d1af8b32b4ecdb61594c5b71d<>res://.godot/imported/goblin-jump-animation.png-436456b3078996fe4f3927933a2187f6.ctex::
 hit-animation-goblin.png::CompressedTexture2D/CompressedTexture2D::4809213683346975713::1752895621::1752895621::1::::<><><>0<>0<>35789d52165e341ed213edb7ed6407f2<>res://.godot/imported/hit-animation-goblin.png-4a53233d87c5eaea2a391a3f57e07cec.ctex::
 reworked knight shovel idle-Sheet.png::CompressedTexture2D/CompressedTexture2D::3101028081804814990::1752944001::1752944020::1::::<><><>0<>0<>3c2b0e2e57f0e30f92183a9af84d00de<>res://.godot/imported/reworked knight shovel idle-Sheet.png-7e204b52d5209d6facf8efeb12b63475.ctex::
-::res://Code/::1752947697
+::res://Code/::1752950414
 button.gd::GDScript/GDScript::5634515676199492430::1752943925::0::1::::<>Button<><>0<>0<><>::
+control.gd::GDScript/GDScript::3650599767993922080::1752948859::0::1::::<>Control<><>0<>0<><>::
 goblin.gd::GDScript/GDScript::2521072565240314158::1752895621::0::1::::<>CharacterBody2D<><>0<>0<><>::
-Startmenu.gd::GDScript::1232815609046002059::1752947697::0::1::::<>Control<><>0<>0<><>::
-::res://scenes/::1752948119
+Startmenu.gd::GDScript/GDScript::1232815609046002059::1752950414::0::1::::<>Control<><>0<>0<><>::
+::res://Music/::1752950433
+twilight-game-menu-short-pixabay-356042.mp3::AudioStreamMP3::1153350305509000298::1752950422::1752950434::1::::<><><>0<>0<>2e6c94faac41280289976b702f7d9024<>res://.godot/imported/twilight-game-menu-short-pixabay-356042.mp3-c0a9c2ddea2057dec7994ff9822a36ea.mp3str::
+::res://scenes/::1752950414
 game.tscn::PackedScene/PackedScene::4666051577882546868::1752944001::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn<>uid://bsdbs3dteuw2u::::res://shovel_boss.tscn
 goblin.tscn::PackedScene/PackedScene::2086513442698418304::1752944001::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png
 Menu.tscn::PackedScene/PackedScene::5721356594931142005::1752943925::0::1::::<><><>0<>0<><>::
 plat.tscn::PackedScene/PackedScene::7677970700997532570::1752943765::0::1::::<><><>0<>0<><>::
-Settings.tscn::PackedScene::6612395611093453012::1752948247::0::1::::<><><>0<>0<><>::uid://bsam3yu114fjs::::res://control.gd
-StartMenu.tscn::PackedScene::2140986686099846721::1752948118::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd
+Settings.tscn::PackedScene/PackedScene::6612395611093453012::1752949776::0::1::::<><><>0<>0<><>::uid://bsam3yu114fjs::::res://Code/control.gd
+StartMenu.tscn::PackedScene/PackedScene::2140986686099846721::1752950414::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd

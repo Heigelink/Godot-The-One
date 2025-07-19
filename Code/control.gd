@@ -17,12 +17,21 @@ func _ready():
 	# Load saved settings
 	_load_settings()
 	
+	# Ensure music is still playing when entering settings
+	if has_node("/root/MusicManager"):
+		MusicManager.ensure_music_playing()
+	
 	# Focus the back button for keyboard navigation
 	$VBoxContainer/BackButton.grab_focus()
 
 # Go back to main menu
 func _on_back_button_pressed():
 	print("Returning to main menu...")
+	
+	# Save music position before changing scenes
+	if has_node("/root/MusicManager"):
+		MusicManager.save_music_state()
+	
 	get_tree().change_scene_to_file("res://scenes/StartMenu.tscn")
 
 # Handle master volume change
@@ -38,22 +47,41 @@ func _on_master_volume_changed(value):
 # Handle SFX volume change
 func _on_sfx_volume_changed(value):
 	print("SFX volume changed to: ", value)
-	# You'll need to create an "SFX" audio bus in the Audio settings
 	var sfx_bus = AudioServer.get_bus_index("SFX")
 	if sfx_bus != -1:
-		var db_value = linear_to_db(value / 100.0)
-		AudioServer.set_bus_volume_db(sfx_bus, db_value)
+		# Handle zero volume case to avoid log(0) error
+		if value <= 0:
+			AudioServer.set_bus_volume_db(sfx_bus, -80.0)  # Effectively muted
+		else:
+			var db_value = linear_to_db(value / 100.0)
+			AudioServer.set_bus_volume_db(sfx_bus, db_value)
+	else:
+		print("Warning: SFX audio bus not found! Please create an 'SFX' bus in the Audio dock.")
 	
 	_save_settings()
 
 # Handle Music volume change
 func _on_music_volume_changed(value):
 	print("Music volume changed to: ", value)
-	# You'll need to create a "Music" audio bus in the Audio settings
 	var music_bus = AudioServer.get_bus_index("Music")
+	
 	if music_bus != -1:
-		var db_value = linear_to_db(value / 100.0)
-		AudioServer.set_bus_volume_db(music_bus, db_value)
+		# Handle zero volume case to avoid log(0) error
+		if value <= 0:
+			AudioServer.set_bus_volume_db(music_bus, -80.0)  # Effectively muted
+		else:
+			var db_value = linear_to_db(value / 100.0)
+			AudioServer.set_bus_volume_db(music_bus, db_value)
+	else:
+		print("Warning: Music audio bus not found! Please create a 'Music' bus in the Audio dock.")
+		print("Note: If using autoplay music, it goes through the Master bus.")
+		# Optionally, you could also affect Master bus for autoplay music:
+		# var master_bus = AudioServer.get_bus_index("Master")
+		# if value <= 0:
+		#     AudioServer.set_bus_volume_db(master_bus, -80.0)
+		# else:
+		#     var db_value = linear_to_db(value / 100.0)
+		#     AudioServer.set_bus_volume_db(master_bus, db_value)
 	
 	_save_settings()
 
