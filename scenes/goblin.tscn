@@ -127,7 +127,7 @@ script = ExtResource("1_76chb")
 position = Vector2(412.044, 2232.75)
 scale = Vector2(12.9551, 13.0586)
 sprite_frames = SubResource("SpriteFrames_utad2")
-animation = &"jump"
+animation = &"Idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 position = Vector2(417.234, 2244.37)
