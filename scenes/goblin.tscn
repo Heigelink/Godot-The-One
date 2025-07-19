@@ -115,7 +115,7 @@ animations = [{
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3s2j4"]
 radius = 110.0
-height = 390.0
+height = 311.26
 
 [node name="Goblin" type="Node2D"]
 

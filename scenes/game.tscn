@@ -13,5 +13,5 @@ position = Vector2(-2, -2)
 position = Vector2(-384, 263)
 
 [node name="shovel boss" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(446, 485)
+position = Vector2(445, 498)
 scale = Vector2(1.5, 1.5)
