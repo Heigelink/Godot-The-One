@@ -1,35 +1,20 @@
 ea4bc82a6ad023ab7ee23ee620429895
-<<<<<<< HEAD
-::res://::1752895648
-README.md::TextFile::-1::1752895621::0::1::::<><><>0<>0<><>::
-::res://animations/::1752895621
-=======
-::res://::1752943624
-README.md::TextFile::-1::1752895621::0::1::::<><><>0<>0<><>::
-shovel_boss.tscn::PackedScene::3656107339880566018::1752943594::0::1::::<><><>0<>0<><>::uid://bkgfqkh74w6rq::::res://animations/reworked knight shovel idle-Sheet.png
-::res://animations/::1752943594
->>>>>>> Goblin
+::res://::1752944019
+README.md::TextFile/TextFile::-1::1752895621::0::1::::<><><>0<>0<><>::
+shovel_boss.tscn::PackedScene::3656107339880566018::1752944001::0::1::::<><><>0<>0<><>::uid://bkgfqkh74w6rq::::res://animations/reworked knight shovel idle-Sheet.png
+::res://animations/::1752944001
 goblin-fixed-walking.png::CompressedTexture2D/CompressedTexture2D::7069975492661573828::1752895621::1752895621::1::::<><><>0<>0<>128c05dc5bd5f0fa466718d05e35d363<>res://.godot/imported/goblin-fixed-walking.png-cd563b7d488ce6112c93ec7ba599c855.ctex::
 goblin-idle.png::CompressedTexture2D/CompressedTexture2D::2340885778725119530::1752895621::1752895621::1::::<><><>0<>0<>e57f3aff3579cc1adc785b6d9e07aa35<>res://.godot/imported/goblin-idle.png-abc4dd69a79ae3c5f446edbf5708866d.ctex::
 goblin-jump-animation.png::CompressedTexture2D/CompressedTexture2D::1562446915476148641::1752895621::1752895621::1::::<><><>0<>0<>5340d33d1af8b32b4ecdb61594c5b71d<>res://.godot/imported/goblin-jump-animation.png-436456b3078996fe4f3927933a2187f6.ctex::
 hit-animation-goblin.png::CompressedTexture2D/CompressedTexture2D::4809213683346975713::1752895621::1752895621::1::::<><><>0<>0<>35789d52165e341ed213edb7ed6407f2<>res://.godot/imported/hit-animation-goblin.png-4a53233d87c5eaea2a391a3f57e07cec.ctex::
-<<<<<<< HEAD
-::res://Code/::1752895626
-button.gd::GDScript::5634515676199492430::1752895626::0::1::::<>Button<><>0<>0<><>::
-goblin.gd::GDScript::2521072565240314158::1752895621::0::1::::<>CharacterBody2D<><>0<>0<><>::
-Startmenu.gd::GDScript::1232815609046002059::1752895626::0::1::::<>Control<><>0<>0<><>::
-::res://scenes/::1752895626
-game.tscn::PackedScene::4666051577882546868::1752895621::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn
-goblin.tscn::PackedScene::2086513442698418304::1752895621::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png
-Menu.tscn::PackedScene::5721356594931142005::1752895626::0::1::::<><><>0<>0<><>::
-plat.tscn::PackedScene::7677970700997532570::1752895621::0::1::::<><><>0<>0<><>::
-StartMenu.tscn::PackedScene::2140986686099846721::1752895626::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd
-=======
-reworked knight shovel idle-Sheet.png::CompressedTexture2D/CompressedTexture2D::3101028081804814990::1752943594::1752943625::1::::<><><>0<>0<>3c2b0e2e57f0e30f92183a9af84d00de<>res://.godot/imported/reworked knight shovel idle-Sheet.png-7e204b52d5209d6facf8efeb12b63475.ctex::
-::res://Code/::1752943473
-goblin.gd::GDScript::2521072565240314158::1752895621::0::1::::<>CharacterBody2D<><>0<>0<><>::
-::res://scenes/::1752943594
-game.tscn::PackedScene::4666051577882546868::1752943594::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn<>uid://bsdbs3dteuw2u::::res://shovel_boss.tscn
-goblin.tscn::PackedScene::2086513442698418304::1752943594::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png
-plat.tscn::PackedScene::7677970700997532570::1752895651::0::1::::<><><>0<>0<><>::
->>>>>>> Goblin
+reworked knight shovel idle-Sheet.png::CompressedTexture2D::3101028081804814990::1752944001::1752944020::1::::<><><>0<>0<>3c2b0e2e57f0e30f92183a9af84d00de<>res://.godot/imported/reworked knight shovel idle-Sheet.png-7e204b52d5209d6facf8efeb12b63475.ctex::
+::res://Code/::1752943925
+button.gd::GDScript::5634515676199492430::1752943925::0::1::::<>Button<><>0<>0<><>::
+goblin.gd::GDScript/GDScript::2521072565240314158::1752895621::0::1::::<>CharacterBody2D<><>0<>0<><>::
+Startmenu.gd::GDScript::1232815609046002059::1752943925::0::1::::<>Control<><>0<>0<><>::
+::res://scenes/::1752944001
+game.tscn::PackedScene::4666051577882546868::1752944001::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn<>uid://bsdbs3dteuw2u::::res://shovel_boss.tscn
+goblin.tscn::PackedScene::2086513442698418304::1752944001::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png
+Menu.tscn::PackedScene::5721356594931142005::1752943925::0::1::::<><><>0<>0<><>::
+plat.tscn::PackedScene::7677970700997532570::1752943765::0::1::::<><><>0<>0<><>::
+StartMenu.tscn::PackedScene::2140986686099846721::1752943925::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd
