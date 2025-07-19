@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://b7qjgnccs1pu7"]
+[gd_scene load_steps=4 format=3 uid="uid://b7qjgnccs1pu7"]
 
 [ext_resource type="PackedScene" uid="uid://4yytoyrju3uy" path="res://scenes/goblin.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dhnjb5mpasw31" path="res://scenes/plat.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://bsdbs3dteuw2u" path="res://shovel_boss.tscn" id="3_lnu2h"]
 
 [node name="Game" type="Node2D"]
 
@@ -10,3 +11,7 @@ position = Vector2(-2, -2)
 
 [node name="Node2D" parent="." instance=ExtResource("2_yqjtg")]
 position = Vector2(-384, 263)
+
+[node name="shovel boss" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(446, 485)
+scale = Vector2(1.5, 1.5)
