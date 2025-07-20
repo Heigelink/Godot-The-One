@@ -19,6 +19,13 @@ config/icon="res://icon.svg"
 
 MusicManager="*res://MusicManager.gd"
 
+[display]
+
+window/size/viewport_width=1222
+window/size/viewport_height=748
+window/size/borderless=true
+window/stretch/mode="viewport"
+
 [input]
 
 move_right={

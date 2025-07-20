@@ -1,8 +1,6 @@
 res://scenes/StartMenu.tscn
-res://control.gd
-res://Settings.tscn
-res://Code/Startmenu.gd
-res://scenes/Settings.tscn
-res://Code/control.gd
 res://MusicManager.gd
-res://default_bus_layout.tres
+res://scenes/Settings.tscn
+res://scenes/game.tscn
+res://scenes/goblin.tscn
+res://scenes/level.tscn

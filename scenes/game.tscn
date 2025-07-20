@@ -1,17 +1,53 @@
-[gd_scene load_steps=4 format=3 uid="uid://b7qjgnccs1pu7"]
+[gd_scene load_steps=5 format=3 uid="uid://b7qjgnccs1pu7"]
 
 [ext_resource type="PackedScene" uid="uid://4yytoyrju3uy" path="res://scenes/goblin.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://dhnjb5mpasw31" path="res://scenes/plat.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://csgk36p1c0m0f" path="res://scenes/level.tscn" id="3_lbhrr"]
 [ext_resource type="PackedScene" uid="uid://bsdbs3dteuw2u" path="res://shovel_boss.tscn" id="3_lnu2h"]
 
 [node name="Game" type="Node2D"]
 
 [node name="Goblin" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(-2, -2)
+top_level = true
+position = Vector2(161, 268)
 
-[node name="Node2D" parent="." instance=ExtResource("2_yqjtg")]
-position = Vector2(-384, 263)
+[node name="Camera2D" type="Camera2D" parent="Goblin"]
+position = Vector2(423, 81)
+zoom = Vector2(1.165, 1.165)
 
 [node name="shovel boss" parent="." instance=ExtResource("3_lnu2h")]
-position = Vector2(445, 498)
-scale = Vector2(1.5, 1.5)
+top_level = true
+position = Vector2(1010, 473)
+scale = Vector2(0.79, 0.79)
+
+[node name="Level" parent="." instance=ExtResource("3_lbhrr")]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1, -21)
+metadata/_edit_lock_ = true
+
+[node name="Node2D" parent="." instance=ExtResource("2_yqjtg")]
+show_behind_parent = true
+light_mask = 513
+visibility_layer = 513
+position = Vector2(-1833, -539)
+scale = Vector2(4.005, 4.005)
+metadata/_edit_lock_ = true
+
+[node name="Node2D2" parent="." instance=ExtResource("2_yqjtg")]
+show_behind_parent = true
+light_mask = 513
+visibility_layer = 513
+position = Vector2(1089, -2250)
+rotation = 1.5708
+scale = Vector2(4.005, 4.005)
+metadata/_edit_lock_ = true
+
+[node name="Node2D3" parent="." instance=ExtResource("2_yqjtg")]
+show_behind_parent = true
+light_mask = 513
+visibility_layer = 513
+position = Vector2(2621, -2301)
+rotation = 1.5708
+scale = Vector2(4.005, 4.005)
+metadata/_edit_lock_ = true

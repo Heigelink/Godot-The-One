@@ -120,7 +120,7 @@ height = 311.26
 [node name="Goblin" type="Node2D"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-scale = Vector2(0.21, 0.21)
+scale = Vector2(0.09, 0.09)
 script = ExtResource("1_76chb")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
