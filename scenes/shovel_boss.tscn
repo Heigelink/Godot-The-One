@@ -97,7 +97,7 @@ animations = [{
 height = 24.3267
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p43o5"]
-size = Vector2(61.5, 20)
+size = Vector2(37.25, 12)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2kh86"]
 bg_color = Color(0.122252, 0.122252, 0.122252, 1)
@@ -119,15 +119,15 @@ script = ExtResource("1_2kh86")
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DetectionArea"]
 position = Vector2(-19.0907, -58.1647)
 scale = Vector2(1.94179, 1.06826)
-polygon = PackedVector2Array(-270, 215, 7.77151, 32.9177, -269.128, -209.494)
+polygon = PackedVector2Array(-125.611, 162.1, 7.77151, 32.9177, -127.67, -126.22)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(4, -11.75)
 scale = Vector2(1.75, 1.87037)
 sprite_frames = SubResource("SpriteFrames_aqjbt")
-animation = &"Idle"
+animation = &"attack"
 autoplay = "Idle"
-frame_progress = 0.190886
+frame_progress = 0.576196
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -140,7 +140,7 @@ collision_layer = 16
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(-34.25, -12)
+position = Vector2(0.625, -16)
 shape = SubResource("RectangleShape2D_p43o5")
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]

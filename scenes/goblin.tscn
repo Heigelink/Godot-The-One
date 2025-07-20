@@ -1,11 +1,24 @@
-[gd_scene load_steps=22 format=3 uid="uid://4yytoyrju3uy"]
+[gd_scene load_steps=26 format=3 uid="uid://4yytoyrju3uy"]
 
 [ext_resource type="Script" uid="uid://bb6hxxrwtlq0u" path="res://Code/goblin.gd" id="1_76chb"]
 [ext_resource type="Texture2D" uid="uid://carvbuawy3byn" path="res://animations/hit-animation-goblin.png" id="2_g1p1y"]
+[ext_resource type="Texture2D" uid="uid://plkomsmb14fx" path="res://animations/reworked knight shovel punch.png" id="2_yyaat"]
 [ext_resource type="Texture2D" uid="uid://8l7bucfv3h67" path="res://animations/goblin-idle.png" id="3_lkl8q"]
 [ext_resource type="Texture2D" uid="uid://c7y0p0ytidvhk" path="res://animations/goblin-fixed-walking.png" id="4_yyaat"]
 [ext_resource type="Texture2D" uid="uid://wi4ji6iyhpor" path="res://animations/goblin-jump-animation.png" id="5_g1p1y"]
 [ext_resource type="Theme" uid="uid://dwfqpotaybxdx" path="res://ifk.tres" id="6_lkl8q"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u21pb"]
+atlas = ExtResource("2_yyaat")
+region = Rect2(0, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vho8j"]
+atlas = ExtResource("2_yyaat")
+region = Rect2(24, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g2t3q"]
+atlas = ExtResource("2_yyaat")
+region = Rect2(48, 0, 24, 28)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mq4fs"]
 atlas = ExtResource("2_g1p1y")
@@ -57,6 +70,20 @@ region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_utad2"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u21pb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vho8j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g2t3q")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mq4fs")
@@ -119,7 +146,7 @@ radius = 110.0
 height = 311.26
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g1p1y"]
-size = Vector2(34.5893, 17)
+size = Vector2(34.5893, 8.00001)
 
 [node name="Goblin" type="CharacterBody2D" groups=["player"]]
 collision_layer = 2
@@ -130,7 +157,8 @@ script = ExtResource("1_76chb")
 position = Vector2(4.65534, 0.804397)
 scale = Vector2(1.16596, 1.17527)
 sprite_frames = SubResource("SpriteFrames_utad2")
-animation = &"Jump"
+animation = &"Attack"
+frame_progress = 0.786039
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5.12244, 1.85017)
@@ -143,7 +171,7 @@ collision_layer = 4
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(26.7054, 1.5)
+position = Vector2(20, -2)
 shape = SubResource("RectangleShape2D_g1p1y")
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]
