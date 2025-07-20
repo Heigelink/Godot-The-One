@@ -1,8 +1,8 @@
-[gd_scene load_steps=26 format=3 uid="uid://4yytoyrju3uy"]
+[gd_scene load_steps=27 format=3 uid="uid://4yytoyrju3uy"]
 
 [ext_resource type="Script" uid="uid://bb6hxxrwtlq0u" path="res://Code/goblin.gd" id="1_76chb"]
 [ext_resource type="Texture2D" uid="uid://carvbuawy3byn" path="res://animations/hit-animation-goblin.png" id="2_g1p1y"]
-[ext_resource type="Texture2D" uid="uid://plkomsmb14fx" path="res://animations/reworked knight shovel punch.png" id="2_yyaat"]
+[ext_resource type="Texture2D" uid="uid://bq12cerh1hsrd" path="res://animations/goblin-punch.png" id="2_yyaat"]
 [ext_resource type="Texture2D" uid="uid://8l7bucfv3h67" path="res://animations/goblin-idle.png" id="3_lkl8q"]
 [ext_resource type="Texture2D" uid="uid://c7y0p0ytidvhk" path="res://animations/goblin-fixed-walking.png" id="4_yyaat"]
 [ext_resource type="Texture2D" uid="uid://wi4ji6iyhpor" path="res://animations/goblin-jump-animation.png" id="5_g1p1y"]
@@ -10,15 +10,19 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u21pb"]
 atlas = ExtResource("2_yyaat")
-region = Rect2(0, 0, 24, 28)
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vho8j"]
 atlas = ExtResource("2_yyaat")
-region = Rect2(24, 0, 24, 28)
+region = Rect2(32, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2t3q"]
 atlas = ExtResource("2_yyaat")
-region = Rect2(48, 0, 24, 28)
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_osho7"]
+atlas = ExtResource("2_yyaat")
+region = Rect2(96, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mq4fs"]
 atlas = ExtResource("2_g1p1y")
@@ -79,6 +83,9 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g2t3q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_osho7")
 }],
 "loop": true,
 "name": &"Attack",
