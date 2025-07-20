@@ -1,11 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://4yytoyrju3uy"]
+[gd_scene load_steps=21 format=3 uid="uid://4yytoyrju3uy"]
 
 [ext_resource type="Script" uid="uid://bb6hxxrwtlq0u" path="res://Code/goblin.gd" id="1_76chb"]
 [ext_resource type="Texture2D" uid="uid://carvbuawy3byn" path="res://animations/hit-animation-goblin.png" id="2_g1p1y"]
 [ext_resource type="Texture2D" uid="uid://8l7bucfv3h67" path="res://animations/goblin-idle.png" id="3_lkl8q"]
 [ext_resource type="Texture2D" uid="uid://c7y0p0ytidvhk" path="res://animations/goblin-fixed-walking.png" id="4_yyaat"]
 [ext_resource type="Texture2D" uid="uid://wi4ji6iyhpor" path="res://animations/goblin-jump-animation.png" id="5_g1p1y"]
-[ext_resource type="Theme" uid="uid://dwfqpotaybxdx" path="res://ifk.tres" id="6_lkl8q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mq4fs"]
 atlas = ExtResource("2_g1p1y")
@@ -35,10 +34,6 @@ region = Rect2(64, 0, 32, 32)
 atlas = ExtResource("3_lkl8q")
 region = Rect2(96, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_lkl8q"]
-atlas = ExtResource("5_g1p1y")
-region = Rect2(0, 0, 32, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_utad2"]
 atlas = ExtResource("4_yyaat")
 region = Rect2(0, 0, 32, 32)
@@ -54,6 +49,10 @@ region = Rect2(64, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_ixvp6"]
 atlas = ExtResource("4_yyaat")
 region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lkl8q"]
+atlas = ExtResource("5_g1p1y")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_utad2"]
 animations = [{
@@ -90,14 +89,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_lkl8q")
-}],
-"loop": true,
-"name": &"Jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_utad2")
 }, {
 "duration": 1.0,
@@ -112,6 +103,14 @@ animations = [{
 "loop": true,
 "name": &"Walk",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lkl8q")
+}],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3s2j4"]
@@ -119,64 +118,27 @@ radius = 110.0
 height = 311.26
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g1p1y"]
-size = Vector2(34.5893, 17)
+size = Vector2(27.1786, 15.4819)
 
-[node name="Goblin" type="CharacterBody2D" groups=["player"]]
-collision_layer = 2
-collision_mask = 25
+[node name="Goblin" type="Node2D"]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." groups=["player"]]
+scale = Vector2(0.09, 0.09)
 script = ExtResource("1_76chb")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(4.65534, 0.804397)
-scale = Vector2(1.16596, 1.17527)
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+position = Vector2(51.726, 8.93774)
+scale = Vector2(12.9551, 13.0586)
 sprite_frames = SubResource("SpriteFrames_utad2")
-animation = &"Jump"
+animation = &"Idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(5.12244, 1.85017)
-scale = Vector2(0.09, 0.09)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(56.916, 20.5574)
 shape = SubResource("CapsuleShape2D_3s2j4")
 
-[node name="AttackArea" type="Area2D" parent="."]
-scale = Vector2(0.999999, 0.999999)
-collision_layer = 4
-collision_mask = 8
+[node name="Area2D" type="Area2D" parent="CharacterBody2D"]
+scale = Vector2(11.1111, 11.1111)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(26.7054, 1.5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D/Area2D"]
+position = Vector2(23, 1.99999)
 shape = SubResource("RectangleShape2D_g1p1y")
-
-[node name="AttackCooldownTimer" type="Timer" parent="."]
-
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="HealthBar" type="ProgressBar" parent="UI"]
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -1106.0
-offset_top = -262.0
-offset_right = -1062.0
-offset_bottom = -256.0
-grow_horizontal = 0
-grow_vertical = 2
-scale = Vector2(2.125, 2.125)
-theme = ExtResource("6_lkl8q")
-value = 100.0
-rounded = true
-show_percentage = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="UI"]
-offset_left = 51.0
-offset_top = 40.0
-offset_right = 103.0
-offset_bottom = 63.0
-scale = Vector2(0.96, 0.96)
-text = "Health"
-metadata/_edit_use_anchors_ = true
-
-[node name="HitTimer" type="Timer" parent="."]
-one_shot = true

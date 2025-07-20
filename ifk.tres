@@ -1,0 +1,14 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dwfqpotaybxdx"]
+
+[sub_resource type="Gradient" id="Gradient_nshvw"]
+colors = PackedColorArray(0.436058, 8.66354e-07, 1.68458e-07, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qak3o"]
+gradient = SubResource("Gradient_nshvw")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gcjib"]
+texture = SubResource("GradientTexture1D_qak3o")
+
+[resource]
+ProgressBar/styles/background = null
+ProgressBar/styles/fill = SubResource("StyleBoxTexture_gcjib")
