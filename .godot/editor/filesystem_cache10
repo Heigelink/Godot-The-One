@@ -1,8 +1,8 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1753034643
+::res://::1753041865
 default_bus_layout.tres::AudioBusLayout/AudioBusLayout::2531710816723020408::1752951312::0::1::::<><><>0<>0<><>::
-ifk.tres::Theme/Theme::8714737523389475361::1753029692::0::1::::<><><>0<>0<><>::
-MusicManager.gd::GDScript/GDScript::8004052886412226235::1753029060::0::1::::<>Node<><>0<>0<><>::
+ifk.tres::Theme::8714737523389475361::1753029692::0::1::::<><><>0<>0<><>::
+MusicManager.gd::GDScript::8004052886412226235::1753029060::0::1::::<>Node<><>0<>0<><>::
 README.md::TextFile/TextFile::-1::1752895621::0::1::::<><><>0<>0<><>::
 tyilemap.png::CompressedTexture2D/CompressedTexture2D::943183497571326094::1752982849::1752982849::1::::<><><>0<>0<>b4a039927db17542209e4238ed8c77c8<>res://.godot/imported/tyilemap.png-32d22c233e58c6ac539cd82637fba5ad.ctex::
 tyilemap_1.png::CompressedTexture2D/CompressedTexture2D::2608865875185968734::1752985234::1752985234::1::::<><><>0<>0<>737d10cf6a260f4921e20a784b32ddf7<>res://.godot/imported/tyilemap_1.png-c35a2812695a7f32db4396d8b7dc871b.ctex::
@@ -12,23 +12,23 @@ goblin-idle.png::CompressedTexture2D/CompressedTexture2D::2340885778725119530::1
 goblin-jump-animation.png::CompressedTexture2D/CompressedTexture2D::1562446915476148641::1752895621::1752895621::1::::<><><>0<>0<>5340d33d1af8b32b4ecdb61594c5b71d<>res://.godot/imported/goblin-jump-animation.png-436456b3078996fe4f3927933a2187f6.ctex::
 hit-animation-goblin.png::CompressedTexture2D/CompressedTexture2D::4809213683346975713::1752895621::1752895621::1::::<><><>0<>0<>35789d52165e341ed213edb7ed6407f2<>res://.godot/imported/hit-animation-goblin.png-4a53233d87c5eaea2a391a3f57e07cec.ctex::
 reworked knight shovel idle-Sheet.png::CompressedTexture2D/CompressedTexture2D::3101028081804814990::1752944001::1752944020::1::::<><><>0<>0<>3c2b0e2e57f0e30f92183a9af84d00de<>res://.godot/imported/reworked knight shovel idle-Sheet.png-7e204b52d5209d6facf8efeb12b63475.ctex::
-reworked knight shovel punch.png::CompressedTexture2D::1076173639541774741::1753034650::1753034651::1::::<><><>0<>0<>3a2a2de2bf0b596f34e331b4f9497d17<>res://.godot/imported/reworked knight shovel punch.png-3f74e4ec85f9c75aa7eb60dd7b6facd0.ctex::
-reworked knight shovel walking.png::CompressedTexture2D::4916710639124107104::1753034654::1753034654::1::::<><><>0<>0<>c45a79a7c99a7582f12f5ecf486bd4d8<>res://.godot/imported/reworked knight shovel walking.png-5e42187033461be3c697161be6e17fae.ctex::
-::res://Code/::1753034643
+reworked knight shovel punch.png::CompressedTexture2D/CompressedTexture2D::1076173639541774741::1753034650::1753034651::1::::<><><>0<>0<>3a2a2de2bf0b596f34e331b4f9497d17<>res://.godot/imported/reworked knight shovel punch.png-3f74e4ec85f9c75aa7eb60dd7b6facd0.ctex::
+reworked knight shovel walking.png::CompressedTexture2D/CompressedTexture2D::4916710639124107104::1753034654::1753034654::1::::<><><>0<>0<>c45a79a7c99a7582f12f5ecf486bd4d8<>res://.godot/imported/reworked knight shovel walking.png-5e42187033461be3c697161be6e17fae.ctex::
+::res://Code/::1753038616
 button.gd::GDScript/GDScript::5634515676199492430::1752943925::0::1::::<>Button<><>0<>0<><>::
 control.gd::GDScript/GDScript::3650599767993922080::1752952928::0::1::::<>Control<><>0<>0<><>::
-goblin.gd::GDScript/GDScript::2521072565240314158::1753033724::0::1::::Player<>CharacterBody2D<><>0<>0<><>::
-shovel_boss.gd::GDScript::6942844156164933033::1753034605::0::1::::Boss<>CharacterBody2D<><>0<>0<><>::
+goblin.gd::GDScript::2521072565240314158::1753038616::0::1::::Player<>CharacterBody2D<><>0<>0<><>::
+shovel_boss.gd::GDScript::6942844156164933033::1753038592::0::1::::Boss<>CharacterBody2D<><>0<>0<><>::
 Startmenu.gd::GDScript/GDScript::1232815609046002059::1752953273::0::1::::<>Control<><>0<>0<><>::
 ::res://Music/::1752950434
 twilight-game-menu-short-pixabay-356042.mp3::AudioStreamMP3/AudioStreamMP3::1153350305509000298::1752950422::1752950434::1::::<><><>0<>0<>2e6c94faac41280289976b702f7d9024<>res://.godot/imported/twilight-game-menu-short-pixabay-356042.mp3-c0a9c2ddea2057dec7994ff9822a36ea.mp3str::
-::res://scenes/::1753034643
-game.tscn::PackedScene/PackedScene::4666051577882546868::1753034638::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn<>uid://csgk36p1c0m0f::::res://scenes/level.tscn<>uid://bsdbs3dteuw2u::::res://shovel_boss.tscn<>uid://dt7kthefavrus::::res://scenes/GameManager.gd
-GameManager.gd::GDScript/GDScript::8559551642414380486::1753034571::0::1::::<>Node<><>0<>0<><>::
-goblin.tscn::PackedScene/PackedScene::2086513442698418304::1753034572::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png<>uid://dwfqpotaybxdx::::res://ifk.tres
-level.tscn::PackedScene/PackedScene::6049285644133057135::1753034572::0::1::::<><><>0<>0<><>::uid://no5dhepxk1w1::::res://tyilemap.png<>uid://bdf0v0u4o3y6a::::res://tyilemap_1.png
+::res://scenes/::1753039071
+game.tscn::PackedScene::4666051577882546868::1753039071::0::1::::<><><>0<>0<><>::uid://4yytoyrju3uy::::res://scenes/goblin.tscn<>uid://dhnjb5mpasw31::::res://scenes/plat.tscn<>uid://csgk36p1c0m0f::::res://scenes/level.tscn<>uid://bsdbs3dteuw2u::::res://scenes/shovel_boss.tscn<>uid://dt7kthefavrus::::res://scenes/GameManager.gd
+GameManager.gd::GDScript::8559551642414380486::1753034571::0::1::::<>Node<><>0<>0<><>::
+goblin.tscn::PackedScene::2086513442698418304::1753039071::0::1::::<><><>0<>0<><>::uid://bb6hxxrwtlq0u::::res://Code/goblin.gd<>uid://carvbuawy3byn::::res://animations/hit-animation-goblin.png<>uid://plkomsmb14fx::::res://animations/reworked knight shovel punch.png<>uid://8l7bucfv3h67::::res://animations/goblin-idle.png<>uid://c7y0p0ytidvhk::::res://animations/goblin-fixed-walking.png<>uid://wi4ji6iyhpor::::res://animations/goblin-jump-animation.png<>uid://dwfqpotaybxdx::::res://ifk.tres
+level.tscn::PackedScene::6049285644133057135::1753039071::0::1::::<><><>0<>0<><>::uid://no5dhepxk1w1::::res://tyilemap.png<>uid://bdf0v0u4o3y6a::::res://tyilemap_1.png
 Menu.tscn::PackedScene/PackedScene::5721356594931142005::1752943925::0::1::::<><><>0<>0<><>::
-plat.tscn::PackedScene/PackedScene::7677970700997532570::1753034572::0::1::::<><><>0<>0<><>::
-Settings.tscn::PackedScene/PackedScene::6612395611093453012::1753034572::0::1::::<><><>0<>0<><>::uid://bsam3yu114fjs::::res://Code/control.gd
-shovel_boss.tscn::PackedScene::3656107339880566018::1753034643::0::1::::<><><>0<>0<><>::uid://c56fvm85dgoar::::res://Code/shovel_boss.gd<>uid://bkgfqkh74w6rq::::res://animations/reworked knight shovel idle-Sheet.png
-StartMenu.tscn::PackedScene/PackedScene::2140986686099846721::1753034572::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd
+plat.tscn::PackedScene::7677970700997532570::1753039071::0::1::::<><><>0<>0<><>::
+Settings.tscn::PackedScene::6612395611093453012::1753039071::0::1::::<><><>0<>0<><>::uid://bsam3yu114fjs::::res://Code/control.gd
+shovel_boss.tscn::PackedScene::3656107339880566018::1753039071::0::1::::<><><>0<>0<><>::uid://c56fvm85dgoar::::res://Code/shovel_boss.gd<>uid://bkgfqkh74w6rq::::res://animations/reworked knight shovel idle-Sheet.png<>uid://plkomsmb14fx::::res://animations/reworked knight shovel punch.png<>uid://ccbxrg2lvco2s::::res://animations/reworked knight shovel walking.png
+StartMenu.tscn::PackedScene::2140986686099846721::1753039071::0::1::::<><><>0<>0<><>::uid://rtgj7ww3rfot::::res://Code/Startmenu.gd
