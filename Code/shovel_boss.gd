@@ -1,261 +1,289 @@
-# Boss.gd - Fixed warnings
+# Boss.gd - Complete fixed script
 extends CharacterBody2D
 class_name Boss
 
-# Boss stats
-@export var max_health: float = 500.0
-@export var current_health: float
-@export var move_speed: float = 150.0
-@export var jump_force: float = -300.0
-@export var attack_damage: float = 20.0
-@export var detection_range: float = 400.0
-@export var attack_range: float = 80.0
-
-# Combat variables
-var can_attack: bool = true
-var is_attacking: bool = false
-var attack_cooldown: float = 2.0
-var is_on_ground: bool = false
-
-# AI State
-enum BossState { IDLE, CHASING, ATTACKING, STUNNED }
-var current_state: BossState = BossState.IDLE
-var player: Player = null
-
-# Node references
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var attack_area: Area2D = get_node_or_null("AttackArea")
-@onready var attack_timer: Timer = get_node_or_null("AttackCooldownTimer")
-@onready var detection_area: Area2D = get_node_or_null("DetectionArea")
-
 # Signals
-signal health_changed(new_health: float)
 signal died
+signal health_changed(new_health: float)
 signal checkpoint_reached(checkpoint_health: float)
 
-# Get gravity from the project settings to be synced with RigidBody nodes
-var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
+enum BossState {
+	IDLE,
+	CHASING,
+	ATTACKING,
+	DEAD
+}
 
-# Progression variables
-var base_health: float = 500.0
-var health_multiplier: float = 1.0
+# Movement variables
+@export var speed: float = 120.0
+var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
+
+# Combat variables
+@export var max_health: float = 200.0
+@export var current_health: float
+@export var attack_damage: float = 25.0
+@export var attack_range: float = 50.0  # Much smaller melee range
+@export var collision_damage: float = 15.0  # Reduced collision damage
+@export var attack_cooldown: float = 3.0   # Longer cooldown between attacks
+@export var attack_delay: float = 1.0      # Time before dealing damage (for animation)
+
+# AI variables
+@export var chase_range: float = 300.0
+@export var detection_range: float = 400.0
+
+# State variables
+var current_state: BossState = BossState.IDLE
+var is_alive: bool = true
+var player_reference: CharacterBody2D
+
+# Timers
+var attack_timer: float = 0.0
+var state_timer: float = 0.0
+var immunity_timer: float = 0.0
+var immunity_duration: float = 0.5
+
+# Health checkpoints (for boss scaling)
+var health_checkpoints: Array[float] = [0.8, 0.6, 0.4, 0.2]
+var triggered_checkpoints: Array[bool] = [false, false, false, false]
+
+# Scaling variables
+var strength_multiplier: float = 1.0
+var deaths_count: int = 0
+
+# Components
+@onready var animated_sprite = $AnimatedSprite2D
 
 func _ready():
 	# Set initial health
 	current_health = max_health
 	
-	# Connect timer
-	if attack_timer:
-		attack_timer.wait_time = attack_cooldown
-		attack_timer.timeout.connect(_on_attack_cooldown_finished)
+	# Add to boss group for easy reference
+	add_to_group("boss")
 	
-	# Connect attack area
-	if attack_area:
-		attack_area.body_entered.connect(_on_attack_area_entered)
+	# Set up collision layers properly
+	collision_layer = 2     # Boss is on layer 2
+	collision_mask = 7      # Collide with player (1) + boss (2) + environment (3) = 7
 	
-	# Connect detection area
-	if detection_area:
-		detection_area.body_entered.connect(_on_detection_area_entered)
-		detection_area.body_exited.connect(_on_detection_area_exited)
+	# Find player reference
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		player_reference = players[0]
 	
-	# Find player directly if no detection area
-	if not detection_area:
-		player = get_tree().get_first_node_in_group("player")
-		if player:
-			print("Boss found player directly")
+	# Emit initial health signal
+	health_changed.emit(current_health)
 	
-	# Set collision layers
-	collision_layer = 4  # Boss layer
-	collision_mask = 1   # World layer
+	print("Boss initialized with health: ", current_health)
 
-func _physics_process(_delta):
-	# Apply gravity
-	if not is_on_floor():
-		velocity.y += gravity * _delta
-	else:
-		is_on_ground = true
-	
-	# Handle AI and movement
-	handle_ai()
-	handle_movement(_delta)
-	
-	# Move the character
-	move_and_slide()
-
-# FIXED: Simplified AI that works without detection area
-func handle_ai():
-	# Find player if we don't have one
-	if not player:
-		player = get_tree().get_first_node_in_group("player")
-		if not player:
-			current_state = BossState.IDLE
-			return
-	
-	var distance_to_player = global_position.distance_to(player.global_position)
-	
-	match current_state:
-		BossState.IDLE:
-			if distance_to_player <= detection_range:
-				current_state = BossState.CHASING
-				print("Boss started chasing!")
-		
-		BossState.CHASING:
-			if distance_to_player <= attack_range and can_attack:
-				current_state = BossState.ATTACKING
-				perform_attack()
-			elif distance_to_player > detection_range * 1.2:  # Add some buffer
-				current_state = BossState.IDLE
-				print("Boss stopped chasing")
-		
-		BossState.ATTACKING:
-			if not is_attacking:
-				current_state = BossState.CHASING
-
-func handle_movement(delta):
-	if current_state == BossState.CHASING and player:
-		var direction_to_player = sign(player.global_position.x - global_position.x)
-		
-		# Horizontal movement
-		velocity.x = direction_to_player * move_speed
-		
-		# Jump if player is above and boss is on ground
-		if player.global_position.y < global_position.y - 50 and is_on_ground and can_attack:
-			velocity.y = jump_force
-			is_on_ground = false
-		
-		# Update sprite direction
-		if animated_sprite:
-			animated_sprite.flip_h = direction_to_player < 0
-			if not is_attacking:
-				animated_sprite.play("walk")
-	
-	elif current_state == BossState.IDLE:
-		# Gradually stop moving
-		velocity.x = move_toward(velocity.x, 0, move_speed * delta)
-		if animated_sprite and not is_attacking:
-			animated_sprite.play("Idle")
-	
-	elif current_state == BossState.ATTACKING:
-		# Continue moving during attack (reduced speed)
-		if player:
-			var direction_to_player = sign(player.global_position.x - global_position.x)
-			velocity.x = direction_to_player * move_speed * 0.3  # 30% speed during attack
-
-func perform_attack():
-	if not can_attack or is_attacking:
+func _physics_process(delta):
+	if not is_alive:
+		velocity = Vector2.ZERO
+		move_and_slide()
 		return
 	
-	is_attacking = true
-	can_attack = false
+	# Handle timers
+	if attack_timer > 0:
+		attack_timer -= delta
 	
-	print("Boss attacking!")
+	if state_timer > 0:
+		state_timer -= delta
 	
-	# Play attack animation
+	if immunity_timer > 0:
+		immunity_timer -= delta
+	
+	# Handle AI state machine
+	handle_ai_state(delta)
+	
+	# Apply gravity
+	if not is_on_floor():
+		velocity.y += gravity * delta
+	
+	# Move and check collisions
+	move_and_slide()
+	check_player_collision()
+
+func handle_ai_state(_delta):
+	match current_state:
+		BossState.IDLE:
+			handle_idle_state(_delta)
+		BossState.CHASING:
+			handle_chasing_state(_delta)
+		BossState.ATTACKING:
+			handle_attacking_state(_delta)
+
+func handle_idle_state(_delta):
+	velocity.x = 0
+	
+	if not player_reference:
+		# Try to find player again
+		var players = get_tree().get_nodes_in_group("player")
+		if players.size() > 0:
+			player_reference = players[0]
+		return
+	
+	var distance_to_player = global_position.distance_to(player_reference.global_position)
+	
+	# Start chasing if player is in detection range
+	if distance_to_player <= detection_range:
+		current_state = BossState.CHASING
+		print("Boss detected player, switching to CHASING")
+
+func handle_chasing_state(_delta):
+	if not player_reference:
+		current_state = BossState.IDLE
+		return
+	
+	var distance_to_player = global_position.distance_to(player_reference.global_position)
+	
+	# Check if close enough to attack
+	if distance_to_player <= attack_range and attack_timer <= 0:
+		current_state = BossState.ATTACKING
+		attack_timer = attack_delay  # Start attack delay
+		velocity.x = 0  # Stop moving
+		print("Boss starting attack sequence")
+		return
+	
+	# Stop chasing if player is too far away
+	if distance_to_player > chase_range:
+		current_state = BossState.IDLE
+		velocity.x = 0
+		return
+	
+	# Move towards player
+	var direction = sign(player_reference.global_position.x - global_position.x)
+	velocity.x = direction * speed * strength_multiplier
+	
+	# Flip sprite
 	if animated_sprite:
-		animated_sprite.play("attack")
+		animated_sprite.flip_h = direction < 0
+
+func handle_attacking_state(_delta):
+	# Stay still during attack
+	velocity.x = 0
 	
-	# Wait a moment for attack animation to start, then deal damage
-	await get_tree().create_timer(0.2).timeout
+	# Check if attack delay is over (let animation play)
+	if attack_timer <= 0 and player_reference:
+		# Deal damage if player is still in melee range
+		var distance_to_player = global_position.distance_to(player_reference.global_position)
+		if distance_to_player <= attack_range:
+			if player_reference.has_method("take_damage"):
+				print("Boss deals attack damage: ", attack_damage * strength_multiplier)
+				player_reference.take_damage(attack_damage * strength_multiplier)
+		
+		# Set cooldown and return to chasing
+		attack_timer = attack_cooldown
+		current_state = BossState.CHASING
+		print("Boss attack completed, cooldown started")
+
+func check_player_collision():
+	# Only deal collision damage if not currently attacking (to avoid double damage)
+	if current_state == BossState.ATTACKING:
+		return
 	
-	# Deal damage to overlapping players (with or without attack area)
-	if attack_area:
-		var bodies = attack_area.get_overlapping_bodies()
-		for body in bodies:
-			if body is Player:
-				body.take_damage(attack_damage)
-				print("Boss hit player for ", attack_damage, " damage")
-	else:
-		# Fallback: damage player if close enough
-		if player and global_position.distance_to(player.global_position) <= attack_range:
-			player.take_damage(attack_damage)
-			print("Boss hit player for ", attack_damage, " damage (direct hit)")
-	
-	# Start cooldown
-	if attack_timer:
-		attack_timer.start()
-	else:
-		# Fallback if no timer
-		await get_tree().create_timer(attack_cooldown).timeout
-		_on_attack_cooldown_finished()
+	# Check collision results from move_and_slide()
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider and collider.is_in_group("player"):
+			# Boss collided with player - deal collision damage
+			if collider.has_method("take_damage"):
+				print("Boss collision damage: ", collision_damage * strength_multiplier)
+				collider.take_damage(collision_damage * strength_multiplier)
+				break
 
 func take_damage(damage: float):
+	if not is_alive:
+		return
+	
+	# Check immunity
+	if immunity_timer > 0:
+		print("Boss is immune to damage!")
+		return
+	
 	current_health -= damage
 	current_health = max(0, current_health)
 	
-	# Emit signal
+	print("Boss took ", damage, " damage! Health: ", current_health, "/", max_health)
+	
+	# Set immunity timer
+	immunity_timer = immunity_duration
+	
+	# Emit health changed signal
 	health_changed.emit(current_health)
 	
-	# Visual feedback
-	modulate = Color.RED
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
-	
-	# Check for checkpoints (every 20% of max health)
-	var health_percentage = current_health / max_health
-	if health_percentage <= 0.8 and health_percentage > 0.6:
-		checkpoint_reached.emit(current_health)
-	elif health_percentage <= 0.6 and health_percentage > 0.4:
-		checkpoint_reached.emit(current_health)
-	elif health_percentage <= 0.4 and health_percentage > 0.2:
-		checkpoint_reached.emit(current_health)
-	elif health_percentage <= 0.2 and health_percentage > 0:
-		checkpoint_reached.emit(current_health)
+	# Check health checkpoints
+	check_health_checkpoints()
 	
 	# Check if dead
 	if current_health <= 0:
 		die()
 
+func check_health_checkpoints():
+	var health_percentage = current_health / max_health
+	
+	for i in range(health_checkpoints.size()):
+		if not triggered_checkpoints[i] and health_percentage <= health_checkpoints[i]:
+			triggered_checkpoints[i] = true
+			var checkpoint_health = health_checkpoints[i] * max_health
+			checkpoint_reached.emit(checkpoint_health)
+			print("Boss reached health checkpoint: ", health_percentage * 100, "%")
+
 func die():
-	print("Boss defeated!")
+	if not is_alive:
+		return
+	
+	print("Boss died!")
+	is_alive = false
+	current_state = BossState.DEAD
+	
+	# Stop all movement
+	velocity = Vector2.ZERO
+	
+	# Disable collision with player
+	set_collision_mask_value(1, false)
+	
+	# Emit death signal
 	died.emit()
-	
-	# Death animation
-	if animated_sprite:
-		animated_sprite.play("Death")
-	
-	# Disable collision and movement
-	collision_shape.set_deferred("disabled", true)
-	set_physics_process(false)
-	
-	# Optional: Remove after animation
-	await get_tree().create_timer(2.0).timeout
-	queue_free()
 
-func make_stronger(death_count: int):
-	# Increase health and damage based on how many times player died
-	health_multiplier = 1.0 + (death_count * 0.3)  # 30% more health per death
-	max_health = base_health * health_multiplier
+func make_stronger(player_deaths: int = 0):
+	# Use the passed death count or increment our own
+	if player_deaths > 0:
+		deaths_count = player_deaths
+	else:
+		deaths_count += 1
+	
+	strength_multiplier = 1.0 + (deaths_count * 0.2)  # 20% stronger per death
+	max_health = 200.0 * (1.0 + deaths_count * 0.1)  # 10% more health per death
 	current_health = max_health
-	attack_damage = 20.0 + (death_count * 5.0)     # +5 damage per death
 	
-	print("Boss got stronger! Health: ", max_health, " Damage: ", attack_damage)
-
-# Signal connections
-func _on_attack_cooldown_finished():
-	can_attack = true
-	is_attacking = false
+	print("Boss got stronger! Deaths: ", deaths_count, " Multiplier: ", strength_multiplier, " Health: ", max_health)
 	
-	if animated_sprite and current_state != BossState.CHASING:
-		animated_sprite.play("Idle")
+	# Reset for respawn
+	is_alive = true
+	current_state = BossState.IDLE
+	
+	# Reset checkpoints
+	triggered_checkpoints = [false, false, false, false]
+	
+	# Re-enable collision
+	set_collision_mask_value(1, true)
+	
+	# Emit health signal
+	health_changed.emit(current_health)
 
-func _on_attack_area_entered(body):
-	if body is Player:
-		print("Player in attack range!")
-
-func _on_detection_area_entered(body):
-	if body is Player:
-		player = body
-		current_state = BossState.CHASING
-		print("Player detected!")
-
-func _on_detection_area_exited(body):
-	if body is Player:
-		current_state = BossState.IDLE
-		print("Player lost!")
-
-# FIXED: Added underscore prefix since parameter isn't used
-func _on_health_changed(_new_health: float):
-	# This function exists for external signal connections
-	# The actual health change logic is in take_damage()
-	pass
+func handle_animations():
+	if not animated_sprite:
+		return
+	
+	match current_state:
+		BossState.DEAD:
+			animated_sprite.play("Death")
+		BossState.ATTACKING:
+			animated_sprite.play("Attack")
+		BossState.CHASING:
+			if abs(velocity.x) > 0:
+				animated_sprite.play("Run")
+			else:
+				animated_sprite.play("Idle")
+		BossState.IDLE:
+			animated_sprite.play("Idle")

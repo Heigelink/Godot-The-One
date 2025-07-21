@@ -14,9 +14,10 @@ position = Vector2(167, 465)
 
 [node name="shovel boss" parent="." instance=ExtResource("3_lnu2h")]
 top_level = true
+light_mask = 2
+visibility_layer = 16
 position = Vector2(1010, 473)
 scale = Vector2(0.79, 0.79)
-max_health = 200.0
 current_health = 200.0
 
 [node name="Level" parent="." instance=ExtResource("3_lbhrr")]

@@ -144,7 +144,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ixvp6")
 }],
 "loop": true,
-"name": &"Run",
+"name": &"Walk",
 "speed": 5.0
 }]
 
@@ -153,23 +153,19 @@ radius = 110.0
 height = 311.26
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g1p1y"]
-size = Vector2(34.5893, 12)
+size = Vector2(34.5893, 8.00001)
 
 [node name="Goblin" type="CharacterBody2D" groups=["player"]]
-collision_mask = 32
+collision_layer = 2
+collision_mask = 25
 script = ExtResource("1_76chb")
-speed = null
-jump_velocity = null
-max_health = null
-current_health = null
-attack_damage = null
-attack_range = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(4.65534, 0.804397)
 scale = Vector2(1.16596, 1.17527)
 sprite_frames = SubResource("SpriteFrames_utad2")
-animation = &"Run"
+animation = &"Attack"
+frame_progress = 0.786039
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5.12244, 1.85017)
@@ -182,8 +178,7 @@ collision_layer = 4
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(20, 4.76838e-07)
-scale = Vector2(1, 1)
+position = Vector2(20, -2)
 shape = SubResource("RectangleShape2D_g1p1y")
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]

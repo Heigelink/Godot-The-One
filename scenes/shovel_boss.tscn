@@ -5,14 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://plkomsmb14fx" path="res://animations/reworked knight shovel punch.png" id="2_2liiy"]
 [ext_resource type="Texture2D" uid="uid://ccbxrg2lvco2s" path="res://animations/reworked knight shovel walking.png" id="4_unv26"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2kh86"]
-atlas = ExtResource("1_p43o5")
-region = Rect2(0, 0, 24, 27)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_is1g7"]
-atlas = ExtResource("1_p43o5")
-region = Rect2(24, 0, 24, 27)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_unv26"]
 atlas = ExtResource("2_2liiy")
 region = Rect2(0, 0, 24, 28)
@@ -24,6 +16,14 @@ region = Rect2(24, 0, 24, 28)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6krei"]
 atlas = ExtResource("2_2liiy")
 region = Rect2(48, 0, 24, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2kh86"]
+atlas = ExtResource("1_p43o5")
+region = Rect2(0, 0, 24, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_is1g7"]
+atlas = ExtResource("1_p43o5")
+region = Rect2(24, 0, 24, 27)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t3c76"]
 atlas = ExtResource("4_unv26")
@@ -49,17 +49,6 @@ region = Rect2(96, 0, 24, 28)
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2kh86")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_is1g7")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_unv26")
 }, {
 "duration": 1.0,
@@ -69,8 +58,19 @@ animations = [{
 "texture": SubResource("AtlasTexture_6krei")
 }],
 "loop": true,
-"name": &"attack",
+"name": &"Attack",
 "speed": 3.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2kh86")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_is1g7")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -89,7 +89,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_mh5jl")
 }],
 "loop": true,
-"name": &"walk",
+"name": &"Run",
 "speed": 6.0
 }]
 
@@ -110,8 +110,8 @@ ProgressBar/styles/background = SubResource("StyleBoxFlat_2kh86")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_is1g7")
 
 [node name="shovel boss" type="CharacterBody2D" groups=["boss"]]
-collision_layer = 8
-collision_mask = 7
+collision_layer = 2
+collision_mask = 64
 script = ExtResource("1_2kh86")
 
 [node name="DetectionArea" type="Area2D" parent="."]
@@ -125,9 +125,8 @@ polygon = PackedVector2Array(-125.611, 162.1, 7.77151, 32.9177, -127.67, -126.22
 position = Vector2(4, -11.75)
 scale = Vector2(1.75, 1.87037)
 sprite_frames = SubResource("SpriteFrames_aqjbt")
-animation = &"attack"
+animation = &"Run"
 autoplay = "Idle"
-frame_progress = 0.576196
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -140,7 +139,7 @@ collision_layer = 16
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-position = Vector2(0.625, -16)
+position = Vector2(-25, -15)
 shape = SubResource("RectangleShape2D_p43o5")
 
 [node name="AttackCooldownTimer" type="Timer" parent="."]

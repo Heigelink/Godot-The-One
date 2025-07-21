@@ -1,9 +1,12 @@
 res://scenes/goblin.tscn
 res://MusicManager.gd
 res://ifk.tres
+res://Code/shovel_boss.gd
+res://Code/goblin.gd
 res://scenes/StartMenu.tscn
 res://scenes/Settings.tscn
 res://scenes/game.tscn
 res://scenes/level.tscn
 res://scenes/shovel_boss.tscn
 res://scenes/plat.tscn
+res://scenes/GameManager.gd

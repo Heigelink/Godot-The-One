@@ -1,6 +1,10 @@
-# Player.gd - Complete Goblin script with Hit animation
+# Player.gd - Complete fixed Goblin script
 extends CharacterBody2D
 class_name Player
+
+# Signals
+signal died
+signal health_changed(new_health: float)
 
 # Movement variables
 @export var speed = 200.0
@@ -11,156 +15,164 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 @export var max_health: float = 100.0
 @export var current_health: float
 @export var attack_damage: float = 25.0
-var can_attack: bool = true
+@export var attack_range: float = 80.0
+
+# State flags
+var is_alive: bool = true
+var is_taking_damage: bool = false
 var is_attacking: bool = false
-var is_taking_damage: bool = false  # New variable to track hit animation
-var damage_immunity_time: float = 1.0  # Immunity duration after taking damage
-var immunity_timer: float = 0.0  # Current immunity timer
+var can_attack: bool = true
 
-# Node references
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var attack_area: Area2D = $AttackArea
-@onready var attack_timer: Timer = $AttackCooldownTimer
-@onready var hit_timer: Timer = $HitTimer  # Timer for hit animation duration
+# Timers
+var immunity_timer: float = 0.0
+var immunity_duration: float = 1.5
+var hit_timer: float = 0.0
+var hit_duration: float = 0.5
+var attack_timer: float = 0.0
+var attack_duration: float = 0.6
 
-# Signals
-signal health_changed(new_health: float)
-signal died
-signal attack_performed
+# Components
+@onready var animated_sprite = $AnimatedSprite2D
+var player_reference: CharacterBody2D
 
 func _ready():
+	# Set initial health
 	current_health = max_health
 	
-	# Setup animated sprite
-	if animated_sprite:
-		animated_sprite.play("Idle")
+	# Add to player group for easy reference
+	add_to_group("player")
 	
-	# Setup attack area
-	if attack_area:
-		attack_area.body_entered.connect(_on_attack_area_entered)
+	# Set up collision layers
+	collision_layer = 1     # Player is on layer 1
+	collision_mask = 6      # Collide with boss (2) + environment (3) = 4+2 = 6
 	
-	# Setup attack timer
-	if attack_timer:
-		attack_timer.wait_time = 0.5  # Attack cooldown
-		attack_timer.timeout.connect(_on_attack_cooldown_finished)
+	# Emit initial health signal
+	health_changed.emit(current_health)
 	
-	# Setup hit timer (create if doesn't exist)
-	if not hit_timer:
-		hit_timer = Timer.new()
-		add_child(hit_timer)
-		hit_timer.wait_time = 0.5  # Hit animation duration
-		hit_timer.one_shot = true
-		hit_timer.timeout.connect(_on_hit_animation_finished)
-	
-	# Set collision layers
-	collision_layer = 2  # Player layer
-	collision_mask = 1   # World layer
+	print("Player initialized with health: ", current_health)
 
 func _physics_process(delta):
-	# Update immunity timer
-	if immunity_timer > 0:
-		immunity_timer -= delta
-		# Flash effect during immunity
-		modulate.a = 0.5 + sin(immunity_timer * 20) * 0.3
-		if immunity_timer <= 0:
-			modulate = Color.WHITE
-	
-	# Don't process movement during hit animation (but allow reduced movement)
-	if is_taking_damage:
-		# Apply gravity and basic physics even during hit
-		if not is_on_floor():
-			velocity.y += gravity * delta
-		velocity.x = move_toward(velocity.x, 0, speed * delta * 2)  # Slow down
+	# Don't process physics if dead
+	if not is_alive:
+		velocity.y += gravity * delta  # Still apply gravity when dead
 		move_and_slide()
 		return
+	
+	# Handle timers
+	if immunity_timer > 0:
+		immunity_timer -= delta
+	
+	if hit_timer > 0:
+		hit_timer -= delta
+		if hit_timer <= 0:
+			is_taking_damage = false
+	
+	if attack_timer > 0:
+		attack_timer -= delta
+		if attack_timer <= 0:
+			is_attacking = false
+			can_attack = true
 	
 	# Handle input and movement
 	handle_input()
 	handle_movement(delta)
-	handle_animation()
-	
-	# Move the character
-	move_and_slide()
+	handle_animations()
 
 func handle_input():
-	# Attack input (allow attacking unless in hit animation)
-	if Input.is_action_just_pressed("attack") and can_attack and not is_attacking and not is_taking_damage:
-		perform_attack()
+	# Don't allow input if taking damage or attacking
+	if is_taking_damage or is_attacking:
+		return
+	
+	# Attack input
+	if Input.is_action_just_pressed("attack") and can_attack and is_on_floor():
+		attack()
 
 func handle_movement(delta):
-	# Add gravity
+	# Don't move if taking damage or attacking
+	if is_taking_damage or is_attacking:
+		velocity.x = 0
+	else:
+		# Horizontal movement
+		var direction = Input.get_axis("move_left", "move_right")
+		if direction != 0:
+			velocity.x = direction * speed
+			# Flip sprite based on direction
+			if animated_sprite:
+				animated_sprite.flip_h = direction < 0
+		else:
+			velocity.x = move_toward(velocity.x, 0, speed)
+		
+		# Jump
+		if Input.is_action_just_pressed("move_up") and is_on_floor():
+			velocity.y = jump_velocity
+	
+	# Apply gravity
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	
-	# Handle jump
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = jump_velocity
-	
-	# Handle horizontal movement
-	var direction = Input.get_axis("ui_left", "ui_right")
-	if direction != 0:
-		velocity.x = direction * speed
-	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
+	# Move and check for collisions
+	move_and_slide()
+	check_boss_collision()
 
-func handle_animation():
-	if not animated_sprite:
-		return
-	
-	# Don't change animation during attack or hit
-	if is_attacking or is_taking_damage:
-		return
-	
-	# Flip sprite based on movement direction
-	if velocity.x > 0:
-		animated_sprite.flip_h = false
-	elif velocity.x < 0:
-		animated_sprite.flip_h = true
-	
-	# Play appropriate animation
-	if is_on_floor():
-		if abs(velocity.x) > 0.1:
-			animated_sprite.play("Walk")
-		else:
-			animated_sprite.play("Idle")
-	else:
-		animated_sprite.play("Jump")
-
-func perform_attack():
+func attack():
 	if not can_attack or is_attacking or is_taking_damage:
 		return
 	
+	print("Player attacking!")
 	is_attacking = true
 	can_attack = false
+	attack_timer = attack_duration
 	
-	# Play attack animation
-	if animated_sprite:
-		animated_sprite.play("Attack")
+	# Check for bosses in attack range
+	var space_state = get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(
+		global_position,
+		global_position + Vector2(attack_range * (1 if not animated_sprite.flip_h else -1), 0)
+	)
+	query.collision_mask = 2  # Only check boss layer
 	
-	# Emit signal
-	attack_performed.emit()
+	var result = space_state.intersect_ray(query)
+	if result:
+		var target = result.collider
+		if target.has_method("take_damage"):
+			print("Player hit boss for ", attack_damage, " damage!")
+			target.take_damage(attack_damage)
 	
-	# Wait a moment then check for hits
-	await get_tree().create_timer(0.2).timeout
+	# Also check for overlapping bodies
+	var bodies = []
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		if collider and collider.is_in_group("boss"):
+			bodies.append(collider)
 	
-	# Deal damage to overlapping enemies
-	if attack_area:
-		var bodies = attack_area.get_overlapping_bodies()
-		for body in bodies:
-			if body is Boss:
-				body.take_damage(attack_damage)
-				print("Player hit boss for ", attack_damage, " damage")
+	# Attack any overlapping bosses
+	for body in bodies:
+		if body.has_method("take_damage") and global_position.distance_to(body.global_position) <= attack_range:
+			print("Player melee hit boss for ", attack_damage, " damage!")
+			body.take_damage(attack_damage)
+
+func check_boss_collision():
+	# Only deal collision damage if not attacking (to avoid double damage)
+	if is_attacking:
+		return
 	
-	# Start cooldown
-	if attack_timer:
-		attack_timer.start()
-	else:
-		# Fallback cooldown
-		await get_tree().create_timer(0.5).timeout
-		_on_attack_cooldown_finished()
+	# Check collision results from move_and_slide()
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+		
+		if collider and collider.is_in_group("boss"):
+			# Boss touched player - player takes damage
+			if immunity_timer <= 0:
+				take_damage(15.0)  # Boss collision damage
+				break
 
 func take_damage(damage: float):
+	# Don't take damage if dead
+	if not is_alive:
+		return
+	
 	# Check immunity - prevent stunlocking
 	if immunity_timer > 0:
 		print("Player is immune to damage!")
@@ -169,73 +181,78 @@ func take_damage(damage: float):
 	current_health -= damage
 	current_health = max(0, current_health)
 	
-	# Start immunity period
-	immunity_timer = damage_immunity_time
+	print("Player took ", damage, " damage! Health: ", current_health)
 	
-	# Start hit animation sequence
-	is_taking_damage = true
-	
-	# Play hit animation
-	if animated_sprite:
-		animated_sprite.play("Hit")
-	
-	# Visual feedback - red flash (will be overridden by immunity flashing)
-	modulate = Color.RED
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
-	
-	# Emit signal
+	# Emit health changed signal
 	health_changed.emit(current_health)
 	
-	# Start hit timer
-	if hit_timer:
-		hit_timer.start()
-	else:
-		# Fallback
-		await get_tree().create_timer(0.5).timeout
-		_on_hit_animation_finished()
-	
-	print("Player took ", damage, " damage. Health: ", current_health)
+	# Set hit state
+	is_taking_damage = true
+	hit_timer = hit_duration
+	immunity_timer = immunity_duration
 	
 	# Check if dead
 	if current_health <= 0:
 		die()
 
 func die():
+	if not is_alive:
+		return
+		
 	print("Player died!")
-	died.emit()
-	
-	# Play death animation or hit animation
-	if animated_sprite:
-		animated_sprite.play("Hit")  # Use hit animation if no death animation
-	
-	# Disable collision and movement
-	collision_shape.set_deferred("disabled", true)
-	set_physics_process(false)
-	
-	# Fade out
-	var tween = create_tween()
-	tween.tween_property(self, "modulate", Color.TRANSPARENT, 1.0)
-
-# Signal callbacks
-func _on_attack_cooldown_finished():
-	can_attack = true
-	is_attacking = false
-
-func _on_hit_animation_finished():
+	is_alive = false
 	is_taking_damage = false
-	# Don't override immunity flashing with normal animation changes
-	if immunity_timer <= 0:
-		# Return to appropriate idle/movement animation
-		if animated_sprite and not is_attacking:
-			if is_on_floor():
-				if abs(velocity.x) > 0.1:
-					animated_sprite.play("Walk")
-				else:
-					animated_sprite.play("Idle")
-			else:
-				animated_sprite.play("Jump")
+	is_attacking = false
+	
+	# Disable collision
+	set_collision_mask_value(1, false)  # Don't collide with player layer
+	set_collision_mask_value(2, false)  # Don't collide with boss layer
+	
+	died.emit()
 
-func _on_attack_area_entered(body):
-	if body is Boss:
-		print("Boss in attack range!")
+func respawn():
+	print("Player respawning!")
+	
+	# Reset all states
+	is_alive = true
+	is_taking_damage = false
+	is_attacking = false
+	can_attack = true
+	
+	# Reset timers
+	immunity_timer = 0.0
+	hit_timer = 0.0
+	attack_timer = 0.0
+	
+	# Reset health
+	current_health = max_health
+	health_changed.emit(current_health)
+	
+	# Reset velocity
+	velocity = Vector2.ZERO
+	
+	# Re-enable collision
+	set_collision_mask_value(1, true)   # Collide with player layer
+	set_collision_mask_value(2, true)   # Collide with boss layer
+	
+	print("Player respawned with health: ", current_health)
+
+func handle_animations():
+	if not animated_sprite:
+		return
+	
+	if not is_alive:
+		animated_sprite.play("Death")
+	elif is_taking_damage:
+		animated_sprite.play("Hit")
+	elif is_attacking:
+		animated_sprite.play("Attack")
+	elif not is_on_floor():
+		if velocity.y < 0:
+			animated_sprite.play("Jump")
+
+	elif abs(velocity.x) > 0:
+		animated_sprite.play("Run")
+	else:
+		animated_sprite.play("Idle")
+d

@@ -1,4 +1,4 @@
-# GameManager.gd - Fixed ternary operator warnings
+# GameManager.gd - Fixed to work with updated Player/Boss scripts
 extends Node
 
 # Game state
@@ -108,14 +108,13 @@ func _on_boss_checkpoint_reached(checkpoint_health: float):
 
 func respawn_player():
 	if player:
+		# Use the player's built-in respawn function
+		player.respawn()
+		
 		# Reset player to spawn position
 		player.global_position = Vector2(100, 400)  # Adjust as needed
-		player.current_health = player.max_health
-		player.health_changed.emit(player.current_health)
 		
-		# Re-enable player
-		player.collision_shape.disabled = false
-		player.set_physics_process(true)
+		# Reset visual effects
 		player.modulate = Color.WHITE
 		
 		print("Player respawned")
@@ -138,11 +137,14 @@ func apply_auto_upgrades():
 	var points_to_spend = min(player_points, 5)  # Spend up to 5 points
 	
 	if points_to_spend > 0:
-		# FIXED: Ensure both sides of ternary return same type (float)
+		# Apply upgrades
 		player.max_health += float(points_to_spend * 10.0)  # +10 health per point
 		player.attack_damage += float(points_to_spend * 2.0)  # +2 damage per point
 		
+		# Update current health and emit signal
 		player.current_health = player.max_health  # Full heal
+		player.health_changed.emit(player.current_health)
+		
 		player_points -= points_to_spend
 		
 		print("Upgrades applied! Health: ", player.max_health, " Damage: ", player.attack_damage)
@@ -159,7 +161,6 @@ func restart_game():
 
 func update_ui():
 	if points_label:
-		# FIXED: Ensure consistent string types
 		points_label.text = "Points: " + str(player_points)
 	
 	if death_counter:
